@@ -1,26 +1,26 @@
-// it's just easier to keep track when you make the width of the canvas a variable
+// Constants
 const CANVAS_WIDTH = 1500;
 const CANVAS_HEIGHT = 750;
-const IMG_WIDTH = 2050;
-const LEFT_BORDER = 300;
-const RIGHT_BORDER = 1200;
+const BASE_IMG_WIDTH = 2050;
+const LEFT_BORDER = 350;
+const RIGHT_BORDER = 1150;
 const NUM_IMAGES = 11;
 
-let font;
-
+// Classes
 class Location {
-  constructor(mult) {
-    this.x = (CANVAS_WIDTH - IMG_WIDTH) / 2;
-    this.mult = mult;
+  constructor(x) {
+    this.x = x;
   }
 }
 
+// Preloads
 let locationArray = [];
 let imageArray = [];
-
 let worldBot;
+let font;
 
-let state = "intro";
+// State Control
+let state = "panorama";
 let fade = 0;
 let fadeState = "";
 
@@ -32,7 +32,9 @@ function preload() {
 
   // Init locations
   for (let i = 0; i < 11; i++) {
-    locationArray.push(new Location(i));
+    locationArray.push(
+      new Location((CANVAS_WIDTH - (BASE_IMG_WIDTH + i * 25)) / 2)
+    );
   }
 
   worldBot = loadImage("logo-ring.png");
@@ -66,6 +68,10 @@ function draw() {
       fadeState = "fade-out";
       state = "panorama";
     }
+    if (fade < 0) {
+      fadeState = "";
+    }
+
     fill(0, fade);
 
     fadeState === "fade-in" ? (fade += 1) : (fade -= 0.5);
@@ -85,6 +91,7 @@ function mouseReleased() {
   }
 }
 
+// Function specific
 let floatTimer = 0;
 let floatSpeed = 1;
 let floatHeight = 30;
@@ -106,25 +113,34 @@ const drawIntro = () => {
   text("Please click me and get ready to enter.", 1000, 305, 300);
 };
 
+const turnSpeed = 200;
 const drawPanorama = () => {
-  // if the mouse moves to the left, the images move slightly to the right
-  if (mouseX < LEFT_BORDER) {
-    locationArray.forEach((layer, idx) => {
-      if (!(locationArray[NUM_IMAGES - 1].x > 300)) {
-        console.log(locationArray);
-        layer.x = layer.x + layer.mult * ((LEFT_BORDER - mouseX) / 100);
-      }
-    });
-  } else if (mouseX > RIGHT_BORDER) {
-    locationArray.forEach(function (layer) {
-      if (!(locationArray[NUM_IMAGES - 1].x < -790)) {
-        layer.x = layer.x - layer.mult * ((mouseX - RIGHT_BORDER) / 100);
-      }
-    });
+  //// if the mouse moves to the left, the images move slightly to the right
+  if (fadeState === "") {
+    if (mouseX < LEFT_BORDER) {
+      locationArray.forEach((layer, idx) => {
+        // If the front image is full scrolled
+        if (!(locationArray[0].x > 0)) {
+          let mouseVector = (LEFT_BORDER - mouseX) / turnSpeed;
+          let layerVector = (idx * 25 + 550) / 550;
+          layer.x += mouseVector * layerVector;
+        }
+      });
+    } else if (mouseX > RIGHT_BORDER) {
+      locationArray.forEach(function (layer, idx) {
+        // If the front image is full scrolled
+        if (!(locationArray[0].x <= -550)) {
+          let mouseVector = (RIGHT_BORDER - mouseX) / turnSpeed;
+          let layerVector = (idx * 25 + 550) / 550;
+          layer.x += mouseVector * layerVector;
+        }
+      });
+    }
   }
-
   // draw all the images
   for (let i = NUM_IMAGES - 1; i > -1; i--) {
     image(imageArray[i], locationArray[i].x, 0);
   }
+
+  // image(imageArray[i], locationArray[i].x, 0);
 };
