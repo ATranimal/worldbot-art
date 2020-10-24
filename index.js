@@ -26,7 +26,12 @@ let state = "intro"; // intro || panorama
 let fade = 0;
 let fadeState = ""; // "" || fade-in || fade-out
 
+let introMusic;
+let musicVolume = 0;
+
 function preload() {
+  soundFormats("mp3");
+  introMusic = loadSound("intro.mp3");
   // Init Images
   for (let i = 1; i < NUM_IMAGES + 1; i++) {
     imageArray.push(loadImage("panorama1/" + i + ".png"));
@@ -49,6 +54,9 @@ function setup() {
 
   textFont(font, 36);
   textAlign(CENTER);
+
+  introMusic.loop();
+  introMusic.play();
 }
 
 function draw() {
@@ -82,6 +90,15 @@ function draw() {
 
     fadeState === "fade-in" ? (fade += 1) : (fade -= 1);
 
+    if (musicVolume > 0) {
+      musicVolume -= 0.005;
+      introMusic.setVolume(musicVolume);
+      console.log(musicVolume);
+    } else if (musicVolume < 0) {
+      musicVolume = 0;
+      introMusic.setVolume(0);
+    }
+
     rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
 }
@@ -93,6 +110,7 @@ function mouseReleased() {
       floatSpeed = 4;
       floatHeight = 50;
       fadeState = "fade-in";
+      musicVolume = 1;
     }
   }
 
@@ -110,6 +128,11 @@ let floatSpeed = 1;
 let floatHeight = 30;
 const drawIntro = () => {
   background("#592AB3");
+
+  if (musicVolume < 1 && fadeState === "") {
+    introMusic.setVolume(musicVolume);
+    musicVolume += 0.0015;
+  }
 
   floatTimer += 0.04;
 
@@ -130,7 +153,7 @@ const turnSpeed = 230;
 let puffBallTimer = 0;
 let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
-let panoramaEndLimit = 10; // Based on puffBallTimer
+let panoramaEndLimit = 100; // Based on puffBallTimer
 const drawPanorama = () => {
   puffBallTimer += 0.04;
 
