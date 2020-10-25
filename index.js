@@ -13,11 +13,23 @@ class Location {
   }
 }
 
+class PanoramaMouseover {
+  constructor(layer, coordinates, text) {
+    this.layer = layer;
+    this.coordinates = coordinates;
+    this.text = text;
+  }
+}
+
 // Preloads
 let locationArray = [];
 let imageArray = [];
 let panoramaMouseOver = [[4, 200, 450, 300, 650, "The wanderer in the field"]];
 // Structure of each object (layer, x0, x1, y0, y1, text)
+
+let locationTwoArray = [];
+let imageTwoArray = [];
+let panoramaTwoMouseOver = [];
 let worldBot;
 let font;
 
@@ -44,6 +56,18 @@ function preload() {
     );
   }
 
+  // Init Images
+  for (let i = 1; i < NUM_IMAGES + 1; i++) {
+    imageTwoArray.push(loadImage("panorama2/" + i + ".png"));
+  }
+
+  // Init locations
+  for (let i = 0; i < 11; i++) {
+    locationTwoArray.push(
+      new Location((CANVAS_WIDTH - (BASE_IMG_WIDTH + i * 25)) / 2)
+    );
+  }
+
   worldBot = loadImage("logo-ring.png");
 
   font = loadFont("RobotoMono.ttf");
@@ -65,6 +89,9 @@ function draw() {
   switch (state) {
     case "panorama":
       drawPanorama();
+      break;
+    case "panorama2":
+      drawPanoramaTwo();
       break;
     case "intro":
       drawIntro();
@@ -110,7 +137,6 @@ function mouseReleased() {
       floatSpeed = 4;
       floatHeight = 50;
       fadeState = "fade-in";
-      musicVolume = 1;
     }
   }
 
@@ -153,7 +179,7 @@ const turnSpeed = 230;
 let puffBallTimer = 0;
 let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
-let panoramaEndLimit = 100; // Based on puffBallTimer
+let panoramaEndLimit = 75; // Based on puffBallTimer
 const drawPanorama = () => {
   puffBallTimer += 0.04;
 
@@ -218,6 +244,7 @@ const drawPanorama = () => {
     ) {
       if (mouseY > y0 && mouseY < y1) {
         textFont(font, 36);
+        fill(0);
         text(hoverText, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
       }
     }
@@ -231,4 +258,71 @@ const drawPanorama = () => {
     fill(0);
     text("If you're ready to move on, just click on me again", 500, 50);
   }
+};
+
+let petalTimer = 0;
+let petalSpeed = 0.07;
+let petalHeight = 15;
+const drawPanoramaTwo = () => {
+  // if the mouse moves to the left, the images move slightly to the right
+  if (fadeState === "") {
+    if (mouseX < LEFT_BORDER) {
+      locationTwoArray.forEach((layer, idx) => {
+        // If the front image is full scrolled
+        if (!(locationTwoArray[0].x > 0)) {
+          let mouseVector = (LEFT_BORDER - mouseX) / turnSpeed;
+          let layerVector = (idx * 25 + 550) / 550;
+          layer.x += mouseVector * layerVector;
+        }
+      });
+    } else if (mouseX > RIGHT_BORDER) {
+      locationTwoArray.forEach(function (layer, idx) {
+        // If the front image is full scrolled
+        if (!(locationTwoArray[0].x <= -550)) {
+          let mouseVector = (RIGHT_BORDER - mouseX) / turnSpeed;
+          let layerVector = (idx * 25 + 550) / 550;
+          layer.x += mouseVector * layerVector;
+        }
+      });
+    }
+  }
+
+  // puff balls
+  locationArray[0].x += 0.03;
+  locationArray[1].x += 0.03;
+  let petalChange1 = Math.sin(petalTimer * petalSpeed) * petalHeight;
+  let petalChange2 = Math.cos(petalTimer * petalSpeed) * petalHeight;
+
+  // draw all the images
+  for (let i = NUM_IMAGES - 1; i > -1; i--) {
+    if (i === 0) {
+      image(imageTwoArray[i], locationTwoArray[i].x, petalChange1);
+    } else if (i === 1) {
+      image(imageTwoArray[i], locationTwoArray[i].x, petalChange2);
+    } else {
+      image(imageTwoArray[i], locationTwoArray[i].x, 0);
+    }
+  }
+
+  // Determine Hover Text
+  panoramaTwoMouseOver.forEach((textArea) => {
+    // Structure of each object (layer, x0, x1, y0, y1, text)
+    const layer = textArea[0];
+    const x0 = textArea[1];
+    const x1 = textArea[2];
+    const y0 = textArea[3];
+    const y1 = textArea[4];
+    const hoverText = textArea[5];
+
+    if (
+      mouseX > x0 + locationArray[layer].x &&
+      mouseX < x1 + locationArray[layer].x
+    ) {
+      if (mouseY > y0 && mouseY < y1) {
+        textFont(font, 36);
+        fill(0);
+        text(hoverText, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+      }
+    }
+  });
 };
