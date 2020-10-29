@@ -63,7 +63,7 @@ let panoramaMouseOver = [
     1650,
     650,
     750,
-    "Most of Ana’s inhabitants have found themselves quite shaken by its anxieties—sometimes literally! But Misin, as Maggie told me, “has learned to cope with anxiety in their own life, and so is relatively unaffected compared to those around them.” Now, “they have decided to organize a group of caretakers to guide the planet and people in their community through their anxiety.”",
+    "The shift has created opportunities for some – but others, like the Keeper, have been forced to rethink their relationship to their world. When the planet awoke, the Keeper was dethroned, Aruna told me. “Once a leader for their ability to communicate with the Land, now the Keeper is called a charlatan and a doom bringer.” But they continue their work in exile, “engaging in deep meditation in the morning, using fresh produce for meals, and sleeping beneath the ever-brighter night sky. They await the day that the Land will speak to them again. The thing that gives them hope most is that the area around them is always calm, like the Land is trying its best to keep them safe. A friend is not forgotten so easily.”",
   ],
 ];
 // Structure of each object (layer, x0, x1, y0, y1, text)
