@@ -114,7 +114,7 @@ let worldBot;
 let font;
 
 // State Control
-let state = "panorama2"; // intro || panorama || panorama2
+let state = "intro"; // intro || panorama || panorama2
 let fade = 0;
 let fadeState = ""; // "" || fade-in || fade-out
 
@@ -181,7 +181,7 @@ function draw() {
   }
 
   if (fadeState !== "") {
-    if (fade > 500) {
+    if (fade > 800) {
       fadeState = "fade-out";
       if (state === "intro") {
         state = "panorama";
@@ -223,7 +223,7 @@ function draw() {
       );
     }
     if (
-      (fade > 255 && fadeState === "fade-in" && state === "panorama") ||
+      (fade > 300 && fadeState === "fade-in" && state === "panorama") ||
       (fade > 0 && fadeState === "fade-out" && state === "panorama2")
     ) {
       fill("#FFFFFF");
@@ -242,7 +242,7 @@ function draw() {
 
 function mouseReleased() {
   if (state === "intro") {
-    if (mouseX > 550 && mouseX < 950 && mouseY > 145 && mouseY < 605) {
+    if (mouseX > 550 && mouseX < 950 && mouseY > 70 && mouseY < 550) {
       worldBot = loadImage("happy_emoji.png");
       floatSpeed = 4;
       floatHeight = 50;
@@ -263,7 +263,7 @@ let floatTimer = 0;
 let floatSpeed = 1;
 let floatHeight = 30;
 const drawIntro = () => {
-  background("#592AB3");
+  background("#06006F");
 
   if (musicVolume < 1 && fadeState === "") {
     introMusic.setVolume(musicVolume);
@@ -273,24 +273,62 @@ const drawIntro = () => {
   floatTimer += 0.04;
 
   let worldBotYChange = Math.sin(floatTimer * floatSpeed) * floatHeight;
-  image(worldBot, 550, 175 + worldBotYChange, 400, 400);
+  image(worldBot, 550, 100 + worldBotYChange, 400, 400);
 
-  fill(0);
+  textFont(font, 20);
+  fill("#000000");
   text(
-    "Hi! I'm world bot. I want to show you one of my worlds.",
-    150,
-    305,
-    300
+    "Hello! I’m Worldbot. I’m an archivist of sorts — I travel around the Universe through light and data looking for people to share worlds with me. I’ve come to Remote Realities to present the most recent addition to my archive, which I collected from four world-keepers—Maggie, Seb, Aruna and Eryn—who live together in a place called Discord.",
+    98,
+    98,
+    450
   );
-  text("Please click me and get ready to enter.", 1000, 305, 300);
+  text(
+    "When my archive is inspired by a world, it dreams up visualizations that its visitors can explore. You can explore these ones by moving your mouse left and right. When you hover over certain objects, my archive will tell you about them. This time, my archive dreamed up two visualizations – so if you want to see the other one, click on my face and I’ll take you to it.",
+    998,
+    98,
+    450
+  );
+  text(
+    `Soon, I’ll be moving to Discord more permanently to collect more worlds. If you’d like to make one with me, there’s a link in the description where you can learn more. 
+
+I hope you enjoy exploring my archive! Click on me to get started.  
+`,
+    398,
+    548,
+    700
+  );
+
+  fill("#FFFFFF");
+
+  text(
+    "Hello! I’m Worldbot. I’m an archivist of sorts — I travel around the Universe through light and data looking for people to share worlds with me. I’ve come to Remote Realities to present the most recent addition to my archive, which I collected from four world-keepers—Maggie, Seb, Aruna and Eryn—who live together in a place called Discord.",
+    100,
+    100,
+    450
+  );
+  text(
+    "When my archive is inspired by a world, it dreams up visualizations that its visitors can explore. You can explore these ones by moving your mouse left and right. When you hover over certain objects, my archive will tell you about them. This time, my archive dreamed up two visualizations – so if you want to see the other one, click on my face and I’ll take you to it.",
+    1000,
+    100,
+    450
+  );
+  text(
+    `Soon, I’ll be moving to Discord more permanently to collect more worlds. If you’d like to make one with me, there’s a link in the description where you can learn more. 
+
+I hope you enjoy exploring my archive! Click on me to get started.  
+`,
+    400,
+    550,
+    700
+  );
 };
 
 const turnSpeed = 230;
 let puffBallTimer = 0;
 let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
-// let panoramaEndLimit = 75; // Based on puffBallTimer
-let panoramaEndLimit = 0;
+let panoramaEndLimit = 75; // Based on puffBallTimer
 const drawPanorama = () => {
   puffBallTimer += 0.04;
 
@@ -339,43 +377,45 @@ const drawPanorama = () => {
     }
   }
 
-  // Determine Hover Text
-  panoramaMouseOver.forEach((textArea) => {
-    // Structure of each object (layer, x0, x1, y0, y1, text)
-    const layer = textArea[0];
-    const x0 = textArea[1];
-    const x1 = textArea[2];
-    const y0 = textArea[3];
-    const y1 = textArea[4];
-    const hoverText = textArea[5];
+  if (!(fade > 0)) {
+    // Determine Hover Text
+    panoramaMouseOver.forEach((textArea) => {
+      // Structure of each object (layer, x0, x1, y0, y1, text)
+      const layer = textArea[0];
+      const x0 = textArea[1];
+      const x1 = textArea[2];
+      const y0 = textArea[3];
+      const y1 = textArea[4];
+      const hoverText = textArea[5];
 
-    if (
-      mouseX > x0 + locationArray[layer].x &&
-      mouseX < x1 + locationArray[layer].x
-    ) {
-      if (mouseY > y0 && mouseY < y1) {
-        textFont(font, 18);
-        textAlign(LEFT);
-        fill(0);
-        let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
-        fill("#000000");
-        text(hoverText, xPosition, CANVAS_HEIGHT / 2 - 120, CANVAS_WIDTH / 2);
-        text(
-          hoverText,
-          xPosition + 1,
-          CANVAS_HEIGHT / 2 - 121,
-          CANVAS_WIDTH / 2
-        );
-        fill("#FFFFFF");
-        text(
-          hoverText,
-          xPosition + 2,
-          CANVAS_HEIGHT / 2 - 122,
-          CANVAS_WIDTH / 2
-        );
+      if (
+        mouseX > x0 + locationArray[layer].x &&
+        mouseX < x1 + locationArray[layer].x
+      ) {
+        if (mouseY > y0 && mouseY < y1) {
+          textFont(font, 18);
+          textAlign(LEFT);
+          fill(0);
+          let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
+          fill("#000000");
+          text(hoverText, xPosition, CANVAS_HEIGHT / 2 - 120, CANVAS_WIDTH / 2);
+          text(
+            hoverText,
+            xPosition + 1,
+            CANVAS_HEIGHT / 2 - 121,
+            CANVAS_WIDTH / 2
+          );
+          fill("#FFFFFF");
+          text(
+            hoverText,
+            xPosition + 2,
+            CANVAS_HEIGHT / 2 - 122,
+            CANVAS_WIDTH / 2
+          );
+        }
       }
-    }
-  });
+    });
+  }
 
   // Draw the next scene text
   if (puffBallTimer > panoramaEndLimit) {
@@ -432,40 +472,42 @@ const drawPanoramaTwo = () => {
   }
 
   // Determine Hover Text
-  panoramaTwoMouseOver.forEach((textArea) => {
-    // Structure of each object (layer, x0, x1, y0, y1, text)
-    const layer = textArea[0];
-    const x0 = textArea[1];
-    const x1 = textArea[2];
-    const y0 = textArea[3];
-    const y1 = textArea[4];
-    const hoverText = textArea[5];
+  if (!(fade > 0)) {
+    panoramaTwoMouseOver.forEach((textArea) => {
+      // Structure of each object (layer, x0, x1, y0, y1, text)
+      const layer = textArea[0];
+      const x0 = textArea[1];
+      const x1 = textArea[2];
+      const y0 = textArea[3];
+      const y1 = textArea[4];
+      const hoverText = textArea[5];
 
-    if (
-      mouseX > x0 + locationTwoArray[layer].x &&
-      mouseX < x1 + locationTwoArray[layer].x
-    ) {
-      if (mouseY > y0 && mouseY < y1) {
-        textFont(font, 18);
-        textAlign(LEFT);
-        fill(0);
-        let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
-        fill("#000000");
-        text(hoverText, xPosition, CANVAS_HEIGHT / 2 + 50, CANVAS_WIDTH / 2);
-        text(
-          hoverText,
-          xPosition + 1,
-          CANVAS_HEIGHT / 2 + 51,
-          CANVAS_WIDTH / 2
-        );
-        fill("#FFFFFF");
-        text(
-          hoverText,
-          xPosition + 2,
-          CANVAS_HEIGHT / 2 + 52,
-          CANVAS_WIDTH / 2
-        );
+      if (
+        mouseX > x0 + locationTwoArray[layer].x &&
+        mouseX < x1 + locationTwoArray[layer].x
+      ) {
+        if (mouseY > y0 && mouseY < y1) {
+          textFont(font, 18);
+          textAlign(LEFT);
+          fill(0);
+          let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
+          fill("#000000");
+          text(hoverText, xPosition, CANVAS_HEIGHT / 2 + 50, CANVAS_WIDTH / 2);
+          text(
+            hoverText,
+            xPosition + 1,
+            CANVAS_HEIGHT / 2 + 51,
+            CANVAS_WIDTH / 2
+          );
+          fill("#FFFFFF");
+          text(
+            hoverText,
+            xPosition + 2,
+            CANVAS_HEIGHT / 2 + 52,
+            CANVAS_WIDTH / 2
+          );
+        }
       }
-    }
-  });
+    });
+  }
 };
