@@ -188,8 +188,7 @@ function draw() {
       } else if (state === "panorama") {
         state = "panorama2";
       }
-    }
-    if (fade < 0) {
+    } else if (fade < 0) {
       fadeState = "";
     }
 
@@ -332,8 +331,6 @@ let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
 let panoramaEndLimit = 75; // Based on puffBallTimer
 const drawPanorama = () => {
-  puffBallTimer += 0.04;
-
   // if the mouse moves to the left, the images move slightly to the right
   if (fadeState === "") {
     if (mouseX < LEFT_BORDER) {
@@ -355,26 +352,33 @@ const drawPanorama = () => {
         }
       });
     }
-  }
 
-  // puff balls
-  locationArray[2].x += 0.03;
-  locationArray[3].x += 0.03;
-  let puffBallChange1 =
-    Math.sin(puffBallTimer * puffBallSpeed) * puffBallHeight;
-  let puffBallChange2 =
-    Math.cos(puffBallTimer * puffBallSpeed) * puffBallHeight;
+    puffBallTimer += 0.04;
 
-  //clouds
-  locationArray[9].x -= 0.01;
+    // puff balls
+    locationArray[2].x += 0.03;
+    locationArray[3].x += 0.03;
+    let puffBallChange1 =
+      Math.sin(puffBallTimer * puffBallSpeed) * puffBallHeight;
+    let puffBallChange2 =
+      Math.cos(puffBallTimer * puffBallSpeed) * puffBallHeight;
 
-  // draw all the images
-  for (let i = NUM_IMAGES - 1; i > -1; i--) {
-    if (i === 2) {
-      image(imageArray[i], locationArray[i].x, puffBallChange1);
-    } else if (i === 3) {
-      image(imageArray[i], locationArray[i].x, puffBallChange2);
-    } else {
+    //clouds
+    locationArray[9].x -= 0.01;
+
+    // draw all the images
+    for (let i = NUM_IMAGES - 1; i > -1; i--) {
+      if (i === 2) {
+        image(imageArray[i], locationArray[i].x, puffBallChange1);
+      } else if (i === 3) {
+        image(imageArray[i], locationArray[i].x, puffBallChange2);
+      } else {
+        image(imageArray[i], locationArray[i].x, 0);
+      }
+    }
+  } else {
+    // draw all the images
+    for (let i = NUM_IMAGES - 1; i > -1; i--) {
       image(imageArray[i], locationArray[i].x, 0);
     }
   }
@@ -383,18 +387,13 @@ const drawPanorama = () => {
     // Determine Hover Text
     panoramaMouseOver.forEach((textArea) => {
       // Structure of each object (layer, x0, x1, y0, y1, text)
-      const layer = textArea[0];
-      const x0 = textArea[1];
-      const x1 = textArea[2];
-      const y0 = textArea[3];
-      const y1 = textArea[4];
-      const hoverText = textArea[5];
-
       if (
-        mouseX > x0 + locationArray[layer].x &&
-        mouseX < x1 + locationArray[layer].x
+        mouseX > textArea[1] + locationArray[textArea[0]].x &&
+        mouseX < textArea[2] + locationArray[textArea[0]].x
       ) {
-        if (mouseY > y0 && mouseY < y1) {
+        if (mouseY > textArea[3] && mouseY < textArea[4]) {
+          const hoverText = textArea[5];
+
           textFont(font, 18);
           textAlign(LEFT);
           fill(0);
@@ -454,41 +453,40 @@ const drawPanoramaTwo = () => {
         }
       });
     }
-  }
 
-  // puff balls
-  locationTwoArray[0].x += 0.03;
-  locationTwoArray[1].x += 0.03;
-  let petalChange1 = Math.sin(petalTimer * petalSpeed) * petalHeight;
-  let petalChange2 = Math.cos(petalTimer * petalSpeed) * petalHeight;
+    // puff balls
+    locationTwoArray[0].x += 0.03;
+    locationTwoArray[1].x += 0.03;
+    let petalChange1 = Math.sin(petalTimer * petalSpeed) * petalHeight;
+    let petalChange2 = Math.cos(petalTimer * petalSpeed) * petalHeight;
+
+    // draw all the images
+    for (let i = NUM_IMAGES - 1; i > -1; i--) {
+      if (i === 0) {
+        image(imageTwoArray[i], locationTwoArray[i].x, petalChange1);
+      } else if (i === 1) {
+        image(imageTwoArray[i], locationTwoArray[i].x, petalChange2);
+      } else {
+        image(imageTwoArray[i], locationTwoArray[i].x, 0);
+      }
+    }
+  }
 
   // draw all the images
   for (let i = NUM_IMAGES - 1; i > -1; i--) {
-    if (i === 0) {
-      image(imageTwoArray[i], locationTwoArray[i].x, petalChange1);
-    } else if (i === 1) {
-      image(imageTwoArray[i], locationTwoArray[i].x, petalChange2);
-    } else {
-      image(imageTwoArray[i], locationTwoArray[i].x, 0);
-    }
+    image(imageTwoArray[i], locationTwoArray[i].x, 0);
   }
 
   // Determine Hover Text
   if (!(fade > 0)) {
     panoramaTwoMouseOver.forEach((textArea) => {
       // Structure of each object (layer, x0, x1, y0, y1, text)
-      const layer = textArea[0];
-      const x0 = textArea[1];
-      const x1 = textArea[2];
-      const y0 = textArea[3];
-      const y1 = textArea[4];
-      const hoverText = textArea[5];
-
       if (
-        mouseX > x0 + locationTwoArray[layer].x &&
-        mouseX < x1 + locationTwoArray[layer].x
+        mouseX > textArea[1] + locationArray[textArea[0]].x &&
+        mouseX < textArea[2] + locationArray[textArea[0]].x
       ) {
-        if (mouseY > y0 && mouseY < y1) {
+        if (mouseY > textArea[3] && mouseY < textArea[4]) {
+          const hoverText = textArea[5];
           textFont(font, 18);
           textAlign(LEFT);
           fill(0);
