@@ -24,17 +24,97 @@ class PanoramaMouseover {
 // Preloads
 let locationArray = [];
 let imageArray = [];
-let panoramaMouseOver = [[4, 200, 450, 300, 650, "The wanderer in the field"]];
+let panoramaMouseOver = [
+  [
+    4,
+    200,
+    450,
+    300,
+    650,
+    "Most of Ana’s inhabitants have found themselves quite shaken by its anxieties—sometimes literally! But Misin, as Maggie told me, “has learned to cope with anxiety in their own life, and so is relatively unaffected compared to those around them.” Now, “they have decided to organize a group of caretakers to guide the planet and people in their community through their anxiety.”",
+  ],
+  [
+    8,
+    1550,
+    1900,
+    250,
+    500,
+    "Seb told me about this place. “In this world,” they explained, “there is a place that needs space. A planet too overwhelmed by the changes and shifts in others it relocated itself within the galaxy. It moves of its own accord and shifts its path drifting through the galaxy, always keeping its distance and always moving in a new direction.”",
+  ],
+  [
+    8,
+    1000,
+    1250,
+    150,
+    450,
+    "Once, Ana orbited around a star and slumbered, unaware of the kinds of emotions other lifeforms experience. Since the shift, though, it feels as we do. Its anxieties and fears make themselves felt as tremors in the earth and shifts in the clouds. It wanders in darkness, but light creeps in across dimensions, finding ways to give life to the people who inhabit it.",
+  ],
+  [
+    8,
+    2100,
+    2400,
+    150,
+    450,
+    "Eryn told me that this planet’s name is Ana. Some say it comes from Analogous – an allusion to the sense of surprising harmony that many have felt during the shift. But, Eryn warned me, “those who are skeptical of newfound traditions whisper a different name like a curse under their breath: Anathema.”",
+  ],
+  [
+    5,
+    1600,
+    1650,
+    650,
+    750,
+    "Most of Ana’s inhabitants have found themselves quite shaken by its anxieties—sometimes literally! But Misin, as Maggie told me, “has learned to cope with anxiety in their own life, and so is relatively unaffected compared to those around them.” Now, “they have decided to organize a group of caretakers to guide the planet and people in their community through their anxiety.”",
+  ],
+];
 // Structure of each object (layer, x0, x1, y0, y1, text)
 
 let locationTwoArray = [];
 let imageTwoArray = [];
-let panoramaTwoMouseOver = [];
+let panoramaTwoMouseOver = [
+  [
+    3,
+    700,
+    1050,
+    530,
+    750,
+    `Festivals attract all sorts of people. Even—or especially—those who lie, cheat and steal. Eryn told me the story of this one: 
+"They say I'm the greatest gem-shaper of our time," They sigh, regret plan in their voice, "What a load of cabbage crust that is.. we both know that.." their arms had spread with a dramatic flare at the admission, they paused. A fold in the brow conveying something slimy they felt just below the surface, so great that their companion could feel the shame as well. When they found their voice it was a low admission, with none their usual penchant for theatrics, "You know, the piece didn't belong to me. Something my apprentice drew up plans for, had been working away at." A tear glistens in their many eyes.
+`,
+  ],
+  [
+    4,
+    1950,
+    2115,
+    450,
+    700,
+    `In some circles, alignment festivals have become rather controversial. Maggie passed along this archival document, a letter of protest from the very first planetary alignment festival: 
+“Planetary alignment has long been a vital and vibrant part of our culture, but to set aside the stability, productivity, and wellbeing of our communities to celebrate these superior beings who need nothing from us is negligence. Further, are we not wasting the resources bestowed upon us by our planets in our pursuit of opulence and gluttony? The Occupant Protection Organization (OPO) puts forward the simple proposal that our valuable time, energy, and resources would be better spent ensuring our survival in an unpredictable and tumultuous world.”
+`,
+  ],
+  [
+    7,
+    500,
+    850,
+    150,
+    500,
+    `At this particular festival, the alignment of the planets coincides with the blooming of the magnolia trees on the fourth planet from the Sun. As Seb told me, the planet grew trees ten storeys high in preparation for the event. “At the height of spring” – perhaps shortly after this panorama would have taken place – “massive petals from the flowers cascade down to the ground, covering other plant life, even homes and buildings. Thrill-seeking inhabitants can climb the magnolia trees and from their place see the horizons of the other planets, planets brimming with life and their atmospheres rippling. Nature in these months knows no limits, no boundaries, but instead of fearing their environment, inhabitants find beauty in the alien landscapes and the expressions of their planet's joy.” `,
+  ],
+  [
+    3,
+    1750,
+    1900,
+    560,
+    750,
+    `An archivist named Curren eagerly awaits the alignment festival—not necessarily for the celebrations (though they enjoy those as well) but for the data that the event affords their ongoing research. Aruna submitted an original document to me, a series of detailed calculations that take up over three pages. In the margins is scrawled the following, in sharp, quick handwriting: 
+“What could have provoked the merging of galaxies? A force beyond our understanding for now. I wonder if older archives can give us insight using ancient belief systems. On the off-chance this is a cyclical event, perhaps ancient religious texts can be re-examined for patterns.”
+`,
+  ],
+];
 let worldBot;
 let font;
 
 // State Control
-let state = "intro"; // intro || panorama
+let state = "panorama2"; // intro || panorama || panorama2
 let fade = 0;
 let fadeState = ""; // "" || fade-in || fade-out
 
@@ -101,7 +181,7 @@ function draw() {
   }
 
   if (fadeState !== "") {
-    if (fade > 350) {
+    if (fade > 500) {
       fadeState = "fade-out";
       if (state === "intro") {
         state = "panorama";
@@ -120,13 +200,43 @@ function draw() {
     if (musicVolume > 0) {
       musicVolume -= 0.005;
       introMusic.setVolume(musicVolume);
-      console.log(musicVolume);
     } else if (musicVolume < 0) {
       musicVolume = 0;
       introMusic.setVolume(0);
     }
 
     rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    if (
+      (fade > 255 && fadeState === "fade-in" && state === "intro") ||
+      (fade > 0 && fadeState === "fade-out" && state === "panorama")
+    ) {
+      fill("#FFFFFF");
+      textFont(font, 32);
+      textAlign(CENTER);
+      text(
+        "No one quite knows how the shift happened. All they know is that they are conscious now in a way they weren’t before. Some people can change form; others can sense things in new ways. Time works differently. And planets – like this one – can feel, think, speak and sing. ",
+        240,
+        180,
+        CANVAS_WIDTH - 480,
+        CANVAS_HEIGHT
+      );
+    }
+    if (
+      (fade > 255 && fadeState === "fade-in" && state === "panorama") ||
+      (fade > 0 && fadeState === "fade-out" && state === "panorama2")
+    ) {
+      fill("#FFFFFF");
+      textFont(font, 32);
+      textAlign(CENTER);
+      text(
+        "Many people now find joy in connections, resonances and alignment. And the grandest alignment of all is that of the planets. Planetary alignment festivals can span entire solar systems and bring wanderers and curious folks from all over the place, who find a deep sense of belonging, the potential for lasting friendships, and excellent refreshments. The planets, too, enjoy the chance to reconnect and catch up.",
+        240,
+        180,
+        CANVAS_WIDTH - 480,
+        CANVAS_HEIGHT
+      );
+    }
   }
 }
 
@@ -179,7 +289,8 @@ const turnSpeed = 230;
 let puffBallTimer = 0;
 let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
-let panoramaEndLimit = 75; // Based on puffBallTimer
+// let panoramaEndLimit = 75; // Based on puffBallTimer
+let panoramaEndLimit = 0;
 const drawPanorama = () => {
   puffBallTimer += 0.04;
 
@@ -243,9 +354,25 @@ const drawPanorama = () => {
       mouseX < x1 + locationArray[layer].x
     ) {
       if (mouseY > y0 && mouseY < y1) {
-        textFont(font, 36);
+        textFont(font, 18);
+        textAlign(LEFT);
         fill(0);
-        text(hoverText, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+        let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
+        fill("#000000");
+        text(hoverText, xPosition, CANVAS_HEIGHT / 2 - 120, CANVAS_WIDTH / 2);
+        text(
+          hoverText,
+          xPosition + 1,
+          CANVAS_HEIGHT / 2 - 121,
+          CANVAS_WIDTH / 2
+        );
+        fill("#FFFFFF");
+        text(
+          hoverText,
+          xPosition + 2,
+          CANVAS_HEIGHT / 2 - 122,
+          CANVAS_WIDTH / 2
+        );
       }
     }
   });
@@ -288,8 +415,8 @@ const drawPanoramaTwo = () => {
   }
 
   // puff balls
-  locationArray[0].x += 0.03;
-  locationArray[1].x += 0.03;
+  locationTwoArray[0].x += 0.03;
+  locationTwoArray[1].x += 0.03;
   let petalChange1 = Math.sin(petalTimer * petalSpeed) * petalHeight;
   let petalChange2 = Math.cos(petalTimer * petalSpeed) * petalHeight;
 
@@ -315,13 +442,29 @@ const drawPanoramaTwo = () => {
     const hoverText = textArea[5];
 
     if (
-      mouseX > x0 + locationArray[layer].x &&
-      mouseX < x1 + locationArray[layer].x
+      mouseX > x0 + locationTwoArray[layer].x &&
+      mouseX < x1 + locationTwoArray[layer].x
     ) {
       if (mouseY > y0 && mouseY < y1) {
-        textFont(font, 36);
+        textFont(font, 18);
+        textAlign(LEFT);
         fill(0);
-        text(hoverText, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+        let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
+        fill("#000000");
+        text(hoverText, xPosition, CANVAS_HEIGHT / 2 + 50, CANVAS_WIDTH / 2);
+        text(
+          hoverText,
+          xPosition + 1,
+          CANVAS_HEIGHT / 2 + 51,
+          CANVAS_WIDTH / 2
+        );
+        fill("#FFFFFF");
+        text(
+          hoverText,
+          xPosition + 2,
+          CANVAS_HEIGHT / 2 + 52,
+          CANVAS_WIDTH / 2
+        );
       }
     }
   });
