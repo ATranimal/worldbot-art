@@ -275,53 +275,55 @@ const drawIntro = () => {
   let worldBotYChange = Math.sin(floatTimer * floatSpeed) * floatHeight;
   image(worldBot, 550, 100 + worldBotYChange, 400, 400);
 
-  textFont(font, 20);
-  fill("#000000");
-  text(
-    "Hello! I’m Worldbot. I’m an archivist of sorts — I travel around the Universe through light and data looking for people to share worlds with me. I’ve come to Remote Realities to present the most recent addition to my archive, which I collected from four world-keepers—Maggie, Seb, Aruna and Eryn—who live together in a place called Discord.",
-    98,
-    98,
-    450
-  );
-  text(
-    "When my archive is inspired by a world, it dreams up visualizations that its visitors can explore. You can explore these ones by moving your mouse left and right. When you hover over certain objects, my archive will tell you about them. This time, my archive dreamed up two visualizations – so if you want to see the other one, click on my face and I’ll take you to it.",
-    998,
-    98,
-    450
-  );
-  text(
-    `Soon, I’ll be moving to Discord more permanently to collect more worlds. If you’d like to make one with me, there’s a link in the description where you can learn more. 
+  if (!(fade > 0)) {
+    textFont(font, 20);
+    fill("#000000");
+    text(
+      "Hello! I’m Worldbot. I’m an archivist of sorts — I travel around the Universe through light and data looking for people to share worlds with me. I’ve come to Remote Realities to present the most recent addition to my archive, which I collected from four world-keepers—Maggie, Seb, Aruna and Eryn—who live together in a place called Discord.",
+      98,
+      98,
+      450
+    );
+    text(
+      "When my archive is inspired by a world, it dreams up visualizations that its visitors can explore. You can explore these ones by moving your mouse left and right. When you hover over certain objects, my archive will tell you about them. This time, my archive dreamed up two visualizations – so if you want to see the other one, click on my face and I’ll take you to it.",
+      998,
+      98,
+      450
+    );
+    text(
+      `Soon, I’ll be moving to Discord more permanently to collect more worlds. If you’d like to make one with me, there’s a link in the description where you can learn more. 
 
 I hope you enjoy exploring my archive! Click on me to get started.  
 `,
-    398,
-    548,
-    700
-  );
+      398,
+      548,
+      700
+    );
 
-  fill("#FFFFFF");
+    fill("#FFFFFF");
 
-  text(
-    "Hello! I’m Worldbot. I’m an archivist of sorts — I travel around the Universe through light and data looking for people to share worlds with me. I’ve come to Remote Realities to present the most recent addition to my archive, which I collected from four world-keepers—Maggie, Seb, Aruna and Eryn—who live together in a place called Discord.",
-    100,
-    100,
-    450
-  );
-  text(
-    "When my archive is inspired by a world, it dreams up visualizations that its visitors can explore. You can explore these ones by moving your mouse left and right. When you hover over certain objects, my archive will tell you about them. This time, my archive dreamed up two visualizations – so if you want to see the other one, click on my face and I’ll take you to it.",
-    1000,
-    100,
-    450
-  );
-  text(
-    `Soon, I’ll be moving to Discord more permanently to collect more worlds. If you’d like to make one with me, there’s a link in the description where you can learn more. 
+    text(
+      "Hello! I’m Worldbot. I’m an archivist of sorts — I travel around the Universe through light and data looking for people to share worlds with me. I’ve come to Remote Realities to present the most recent addition to my archive, which I collected from four world-keepers—Maggie, Seb, Aruna and Eryn—who live together in a place called Discord.",
+      100,
+      100,
+      450
+    );
+    text(
+      "When my archive is inspired by a world, it dreams up visualizations that its visitors can explore. You can explore these ones by moving your mouse left and right. When you hover over certain objects, my archive will tell you about them. This time, my archive dreamed up two visualizations – so if you want to see the other one, click on my face and I’ll take you to it.",
+      1000,
+      100,
+      450
+    );
+    text(
+      `Soon, I’ll be moving to Discord more permanently to collect more worlds. If you’d like to make one with me, there’s a link in the description where you can learn more. 
 
 I hope you enjoy exploring my archive! Click on me to get started.  
 `,
-    400,
-    550,
-    700
-  );
+      400,
+      550,
+      700
+    );
+  }
 };
 
 const turnSpeed = 230;
