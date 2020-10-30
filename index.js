@@ -352,7 +352,7 @@ const turnSpeed = 230;
 let puffBallTimer = 0;
 let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
-let panoramaEndLimit = 0; // Based on puffBallTimer
+let panoramaEndLimit = 60; // Based on puffBallTimer
 const drawPanorama = () => {
   // if the mouse moves to the left, the images move slightly to the right
   if (fadeState === "") {
