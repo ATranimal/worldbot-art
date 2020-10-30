@@ -422,23 +422,33 @@ const drawPanorama = () => {
         if (mouseY > textArea[3] && mouseY < textArea[4]) {
           const hoverText = textArea[5];
 
-          textFont(font, 18);
+          textFont(font, 21);
           textAlign(LEFT);
-          fill(0);
-          let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
+
+          let xPosition =
+            mouseX > CANVAS_WIDTH / 2 + 75 ? 20 : CANVAS_WIDTH / 2;
+
+          fill(100, 122);
+          rect(
+            xPosition - 20,
+            CANVAS_HEIGHT / 2 - 20,
+            CANVAS_WIDTH / 2 + 10,
+            CANVAS_HEIGHT / 2 + 10
+          );
+
           fill("#000000");
-          text(hoverText, xPosition, CANVAS_HEIGHT / 2 - 120, CANVAS_WIDTH / 2);
+          text(hoverText, xPosition, CANVAS_HEIGHT / 2, CANVAS_WIDTH / 2);
           text(
             hoverText,
             xPosition + 1,
-            CANVAS_HEIGHT / 2 - 121,
+            CANVAS_HEIGHT / 2 + 1,
             CANVAS_WIDTH / 2
           );
           fill("#FFFFFF");
           text(
             hoverText,
             xPosition + 2,
-            CANVAS_HEIGHT / 2 - 122,
+            CANVAS_HEIGHT / 2 + 2,
             CANVAS_WIDTH / 2
           );
         }
@@ -515,28 +525,38 @@ const drawPanoramaTwo = () => {
     panoramaTwoMouseOver.forEach((textArea) => {
       // Structure of each object (layer, x0, x1, y0, y1, text)
       if (
-        mouseX > textArea[1] + locationArray[textArea[0]].x &&
-        mouseX < textArea[2] + locationArray[textArea[0]].x
+        mouseX > textArea[1] + locationTwoArray[textArea[0]].x &&
+        mouseX < textArea[2] + locationTwoArray[textArea[0]].x
       ) {
         if (mouseY > textArea[3] && mouseY < textArea[4]) {
           const hoverText = textArea[5];
-          textFont(font, 18);
+          textFont(font, 21);
           textAlign(LEFT);
-          fill(0);
-          let xPosition = mouseX > CANVAS_WIDTH / 2 ? 20 : CANVAS_WIDTH / 2;
+
+          let xPosition =
+            mouseX > CANVAS_WIDTH / 2 + 75 ? 20 : CANVAS_WIDTH / 2;
+
+          fill(100, 122);
+          rect(
+            xPosition - 20,
+            CANVAS_HEIGHT / 2 - 20,
+            CANVAS_WIDTH / 2 + 10,
+            CANVAS_HEIGHT / 2 + 10
+          );
+
           fill("#000000");
-          text(hoverText, xPosition, CANVAS_HEIGHT / 2 + 50, CANVAS_WIDTH / 2);
+          text(hoverText, xPosition, CANVAS_HEIGHT / 2, CANVAS_WIDTH / 2);
           text(
             hoverText,
             xPosition + 1,
-            CANVAS_HEIGHT / 2 + 51,
+            CANVAS_HEIGHT / 2 + 1,
             CANVAS_WIDTH / 2
           );
           fill("#FFFFFF");
           text(
             hoverText,
             xPosition + 2,
-            CANVAS_HEIGHT / 2 + 52,
+            CANVAS_HEIGHT / 2 + 2,
             CANVAS_WIDTH / 2
           );
         }
