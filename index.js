@@ -119,11 +119,17 @@ let fade = 0;
 let fadeState = ""; // "" || fade-in || fade-out
 
 let introMusic;
+let pano1Music;
+let pano2Music;
+let loadSFX;
 let musicVolume = 0;
 
 function preload() {
-  soundFormats("mp3");
   introMusic = loadSound("intro.mp3");
+  pano1Music = loadSound("pano1.ogg");
+  pano2Music = loadSound("pano2.ogg");
+  loadSFX = loadSound("load.mp3");
+
   // Init Images
   for (let i = 1; i < NUM_IMAGES + 1; i++) {
     imageArray.push(loadImage("panorama1/" + i + ".png"));
@@ -160,7 +166,14 @@ function setup() {
   textAlign(CENTER);
 
   introMusic.loop();
+  introMusic.setVolume(0);
   introMusic.play();
+
+  pano1Music.loop();
+  pano1Music.setVolume(0);
+
+  pano2Music.loop();
+  pano2Music.setVolume(0);
 }
 
 function draw() {
@@ -185,8 +198,16 @@ function draw() {
       fadeState = "fade-out";
       if (state === "intro") {
         state = "panorama";
+        introMusic.stop();
+        if (!pano1Music.isPlaying()) {
+          pano1Music.play();
+        }
       } else if (state === "panorama") {
         state = "panorama2";
+        pano1Music.stop();
+        if (!pano2Music.isPlaying()) {
+          pano2Music.play();
+        }
       }
     } else if (fade < 0) {
       fadeState = "";
@@ -246,6 +267,7 @@ function mouseReleased() {
       floatSpeed = 4;
       floatHeight = 50;
       fadeState = "fade-in";
+      loadSFX.play();
     }
   }
 
@@ -253,6 +275,7 @@ function mouseReleased() {
     if (mouseX > 400 && mouseX < 500 && mouseY > 0 && mouseY < 100) {
       fade = 0;
       fadeState = "fade-in";
+      loadSFX.play();
     }
   }
 }
@@ -266,7 +289,7 @@ const drawIntro = () => {
 
   if (musicVolume < 1 && fadeState === "") {
     introMusic.setVolume(musicVolume);
-    musicVolume += 0.0015;
+    musicVolume += 0.005;
   }
 
   floatTimer += 0.04;
@@ -329,7 +352,7 @@ const turnSpeed = 230;
 let puffBallTimer = 0;
 let puffBallSpeed = 0.07;
 let puffBallHeight = 15;
-let panoramaEndLimit = 75; // Based on puffBallTimer
+let panoramaEndLimit = 0; // Based on puffBallTimer
 const drawPanorama = () => {
   // if the mouse moves to the left, the images move slightly to the right
   if (fadeState === "") {
@@ -381,6 +404,11 @@ const drawPanorama = () => {
     for (let i = NUM_IMAGES - 1; i > -1; i--) {
       image(imageArray[i], locationArray[i].x, 0);
     }
+  }
+
+  if (musicVolume < 1) {
+    musicVolume += 0.00025;
+    pano1Music.setVolume(musicVolume);
   }
 
   if (!(fade > 0)) {
@@ -452,6 +480,11 @@ const drawPanoramaTwo = () => {
           layer.x += mouseVector * layerVector;
         }
       });
+    }
+
+    if (musicVolume < 1) {
+      musicVolume += 0.00025;
+      pano2Music.setVolume(musicVolume);
     }
 
     // puff balls
